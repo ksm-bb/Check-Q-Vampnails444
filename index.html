@@ -789,12 +789,12 @@
 
                     <div className="flex flex-col gap-2 relative">
                       <select name="status" defaultValue={editingTask?.status || 'waiting'} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm appearance-none cursor-pointer" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }}>
-                        <option value="waiting">รอคิว (0%)</option>
-                        <option value="designing">กำลังออกแบบ (20%)</option>
-                        <option value="design_sent">ส่งแบบแล้ว (40%)</option>
-                        <option value="doing_nails">กำลังทำเล็บ (60%)</option>
-                        <option value="nails_done">เล็บเสร็จแล้ว (80%)</option>
-                        <option value="delivered">ส่งแล้ว (100%)</option>
+                        <option value="waiting">รอคิว</option>
+                        <option value="designing">กำลังออกแบบ</option>
+                        <option value="design_sent">ส่งแบบแล้ว</option>
+                        <option value="doing_nails">กำลังทำเล็บ</option>
+                        <option value="nails_done">เล็บเสร็จแล้ว</option>
+                        <option value="delivered">ส่งแล้ว</option>
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4" style={{ color: COLORS.textSoft }}>
                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -1000,4 +1000,5 @@
   </script>
 </body>
 </html>
+
 
