@@ -37,92 +37,76 @@
 
     // ==========================================
     // 🎨 COLORS — Pink Palette from Noguchi Design
-    // #241a22 | #e5a9bf | #372d36 | #fdd6dd
     // ==========================================
     const COLORS = {
-      blue: '#372d36',       // dark purple-gray blob
-      pink: '#e5a9bf',       // medium pink blob
-      purple: '#241a22',     // darkest blob
-      orange: '#372d36',     // NEXT QUEUE section bg
-      bg: '#241a22',         // ⭐ page background — darkest
-      white: '#fdd6dd',      // light pink border accent
-      textMain: '#fdd6dd',   // ⭐ main text & primary button — light pink
-      textSoft: '#e5a9bf',   // secondary text — medium pink
-      pinkDeep: '#e5a9bf',   // accent — medium pink
-      blueDeep: '#fdd6dd',   // accent — light pink
-      purpleDeep: '#e5a9bf', // accent label
-      orangeDeep: '#fdd6dd', // NEXT QUEUE label — light pink
-      cardBg: '#372d36',     // ⭐ todo/doing card bg — dark purple-gray
-      cardBgDone: '#2e2430', // ⭐ done card bg — slightly darker
+      blue: '#372d36',
+      pink: '#e5a9bf',
+      purple: '#241a22',
+      orange: '#372d36',
+      bg: '#241a22',
+      white: '#fdd6dd',
+      textMain: '#fdd6dd',
+      textSoft: '#e5a9bf',
+      pinkDeep: '#e5a9bf',
+      blueDeep: '#fdd6dd',
+      purpleDeep: '#e5a9bf',
+      orangeDeep: '#fdd6dd',
+      cardBg: '#372d36',
+      cardBgDone: '#2e2430',
+      cardWhite: '#372d36',
+      cardBorder: '#e5a9bf',
+      cardInner: '#241a22',
+      cloudWhite: '#e5a9bf',
+      modalBg: '#372d36',
+      navBarBg: '#372d36',
+      profileBorder: '#e5a9bf',
+      buttonBg: '#241a22',
+      dividerColor: '#e5a9bf',
+      emptyStateBg: '#372d36',
+      calendarBg: '#372d36',
+      searchInputBg: '#372d36',
+      filterBarBg: '#372d36',
+      bannerOverlayBg: '#241a22',
+    };
 
-      cardWhite: '#372d36',       // ⭐ main card bg (Header, ProgressFlower, CompactStats)
-      cardBorder: '#e5a9bf',      // ⭐ card border — medium pink
-      cardInner: '#241a22',       // ⭐ inner elements (badge, circle, input, small btn)
-      cloudWhite: '#e5a9bf',      // ⭐ cloud color — medium pink
-      modalBg: '#372d36',         // ⭐ modal bg — dark purple-gray
-      navBarBg: '#372d36',        // ⭐ nav bar bg — dark purple-gray
-      profileBorder: '#e5a9bf',   // ⭐ profile border — medium pink
-      buttonBg: '#241a22',        // ⭐ button bg — darkest
-      dividerColor: '#e5a9bf',    // ⭐ divider line — medium pink
-      emptyStateBg: '#372d36',    // ⭐ empty state border
-      calendarBg: '#372d36',      // ⭐ calendar bg — dark purple-gray
-      searchInputBg: '#372d36',   // ⭐ search input bg
-      filterBarBg: '#372d36',     // ⭐ filter bar bg
-      bannerOverlayBg: '#241a22', // ⭐ banner overlay btn bg
+    // สถานะทั้งหมด 6 ระดับและ % ที่สัมพันธ์กัน
+    const STATUS_MAP = {
+      'waiting': { label: 'รอคิว', percent: 0, color: '#e5a9bf60' },
+      'designing': { label: 'กำลังออกแบบ', percent: 20, color: '#b5a1c4' },
+      'design_sent': { label: 'ส่งแบบแล้ว', percent: 40, color: '#a0b9cc' },
+      'doing_nails': { label: 'กำลังทำเล็บ', percent: 60, color: '#e5a9bf' },
+      'nails_done': { label: 'เล็บเสร็จแล้ว', percent: 80, color: '#fdd6dd' },
+      'delivered': { label: 'ส่งแล้ว', percent: 100, color: '#a8d5a2' }
     };
 
     const DynamicBackground = React.memo(() => (
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        {/* Base animated gradient background */}
         <div className="absolute inset-0 animate-gradient-shift" style={{
           background: 'linear-gradient(135deg, #241a22 0%, #2e1e28 20%, #372d36 40%, #3a2535 60%, #241a22 80%, #2a1e2e 100%)',
           backgroundSize: '400% 400%',
         }}></div>
-
-        {/* Orb 1 — large warm pink, top-left, slow drift */}
         <div className="absolute rounded-full animate-orb-1" style={{
-          width: '70vw', height: '70vw',
-          top: '-15%', left: '-20%',
-          background: 'radial-gradient(circle, #e5a9bf55 0%, #e5a9bf22 50%, transparent 70%)',
-          filter: 'blur(60px)',
+          width: '70vw', height: '70vw', top: '-15%', left: '-20%',
+          background: 'radial-gradient(circle, #e5a9bf55 0%, #e5a9bf22 50%, transparent 70%)', filter: 'blur(60px)',
         }}></div>
-
-        {/* Orb 2 — light pink, bottom-right, counter drift */}
         <div className="absolute rounded-full animate-orb-2" style={{
-          width: '60vw', height: '60vw',
-          bottom: '-10%', right: '-15%',
-          background: 'radial-gradient(circle, #fdd6dd44 0%, #fdd6dd18 50%, transparent 70%)',
-          filter: 'blur(70px)',
+          width: '60vw', height: '60vw', bottom: '-10%', right: '-15%',
+          background: 'radial-gradient(circle, #fdd6dd44 0%, #fdd6dd18 50%, transparent 70%)', filter: 'blur(70px)',
         }}></div>
-
-        {/* Orb 3 — deep pink, center, pulse */}
         <div className="absolute rounded-full animate-orb-3" style={{
-          width: '50vw', height: '50vw',
-          top: '30%', left: '25%',
-          background: 'radial-gradient(circle, #e5a9bf33 0%, #c4728a1a 50%, transparent 70%)',
-          filter: 'blur(80px)',
+          width: '50vw', height: '50vw', top: '30%', left: '25%',
+          background: 'radial-gradient(circle, #e5a9bf33 0%, #c4728a1a 50%, transparent 70%)', filter: 'blur(80px)',
         }}></div>
-
-        {/* Orb 4 — tiny bright spot, top-right */}
         <div className="absolute rounded-full animate-orb-4" style={{
-          width: '35vw', height: '35vw',
-          top: '5%', right: '0%',
-          background: 'radial-gradient(circle, #fdd6dd30 0%, #e5a9bf15 50%, transparent 70%)',
-          filter: 'blur(50px)',
+          width: '35vw', height: '35vw', top: '5%', right: '0%',
+          background: 'radial-gradient(circle, #fdd6dd30 0%, #e5a9bf15 50%, transparent 70%)', filter: 'blur(50px)',
         }}></div>
-
-        {/* Orb 5 — subtle dark bloom, bottom-left */}
         <div className="absolute rounded-full animate-orb-5" style={{
-          width: '45vw', height: '45vw',
-          bottom: '10%', left: '5%',
-          background: 'radial-gradient(circle, #372d3680 0%, #372d3630 50%, transparent 70%)',
-          filter: 'blur(60px)',
+          width: '45vw', height: '45vw', bottom: '10%', left: '5%',
+          background: 'radial-gradient(circle, #372d3680 0%, #372d3630 50%, transparent 70%)', filter: 'blur(60px)',
         }}></div>
-
-        {/* Shimmer overlay — subtle noise-like gradient sweep */}
         <div className="absolute inset-0 animate-shimmer-sweep opacity-20" style={{
-          background: 'linear-gradient(105deg, transparent 40%, #fdd6dd18 50%, transparent 60%)',
-          backgroundSize: '200% 200%',
+          background: 'linear-gradient(105deg, transparent 40%, #fdd6dd18 50%, transparent 60%)', backgroundSize: '200% 200%',
         }}></div>
       </div>
     ));
@@ -259,73 +243,115 @@
       </div>
     ));
 
-    const TaskCard = React.memo(({ task, isAdmin, onEdit, onToggleDoing, onToggleStatus }) => (
-      <div onClick={() => isAdmin && onEdit(task)} className={`relative mb-2 rounded-[22px] p-3 transition-all shadow-sm group backdrop-blur-sm ${isAdmin ? 'active:scale-[0.97] cursor-pointer' : ''}`}
-        style={{
-          backgroundColor: task.status === 'done' ? COLORS.cardBgDone : COLORS.cardBg,
-          borderWidth: '1px',
-          borderStyle: 'solid',
-          borderColor: task.status === 'doing' ? COLORS.pinkDeep : (task.status === 'done' ? 'transparent' : '#e5a9bf30'),
-          opacity: task.status === 'done' ? 0.7 : 1
-        }}
-      >
-        {task.status === 'doing' && (
-          <div className="absolute inset-0 pointer-events-none z-0">
-            <div className="absolute -bottom-2 -left-3 text-[14px] animate-float-particle-1 drop-shadow-sm">🕯️</div>
-            <div className="absolute top-[30%] -left-4 text-[10px] animate-float-particle-3 drop-shadow-sm" style={{ animationDelay: '1.5s' }}>🕯️</div>
-            <div className="absolute -bottom-2 -right-3 text-[14px] animate-float-particle-2 drop-shadow-sm" style={{ animationDelay: '0.5s' }}>🕯️</div>
-            <div className="absolute top-[30%] -right-4 text-[10px] animate-float-particle-1 drop-shadow-sm" style={{ animationDelay: '1.2s' }}>🕯️</div>
-          </div>
-        )}
-        <div className="absolute left-2 top-3 bottom-3 w-1 rounded-full shadow-sm z-10" style={{ backgroundColor: task.channel === 'LINE' ? '#a8d5a2' : task.channel === 'FB' || task.channel === 'FACEBOOK' ? '#a0b9cc' : task.channel === 'IG' ? '#e5a9bf' : '#fdd6dd' }}></div>
-        <div className="pl-3 pr-1 relative z-10">
-          <div className="flex justify-between items-start mb-1">
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="font-bold text-base truncate" style={{ color: COLORS.textMain }}>{task.client}</span>
-              <span className={`text-[7px] px-1.5 py-0.5 rounded-md font-black uppercase border ${
-                task.channel === 'LINE' ? 'border-[#a8d5a2]/30' :
-                task.channel === 'FB' || task.channel === 'FACEBOOK' ? 'border-[#a0b9cc]/30' :
-                task.channel === 'IG' ? 'border-[#e5a9bf]/30' :
-                'border-[#fdd6dd]/20'
-              }`} style={{ color: COLORS.textSoft, backgroundColor: '#24192210' }}>{task.channel}</span>
-              {task.priority === 'urgent' && <span className="text-[9px] font-bold animate-pulse px-2 py-0.5 rounded-full shadow-sm" style={{ color: COLORS.pinkDeep, backgroundColor: COLORS.buttonBg }}>{'\u{1F525}'} ด่วน</span>}
-            </div>
-            <div className="flex items-center gap-1 text-[9px] font-black px-2.5 py-0.5 rounded-lg shadow-sm" style={{ color: COLORS.pinkDeep, backgroundColor: `${COLORS.cardInner}80`, borderWidth: '1px', borderColor: '#e5a9bf40' }}>
-              <IconCalendar size={11} style={{ color: COLORS.pinkDeep }} />
-              {new Date(task.deadline).toLocaleDateString('th-TH', { day: '2-digit', month: '2-digit', year: '2-digit' })}
-            </div>
-          </div>
+    const TaskCard = React.memo(({ task, isAdmin, onEdit, onStatusChange }) => {
+      let currentStatusKey = task.status;
+      if (currentStatusKey === 'todo') currentStatusKey = 'waiting';
+      if (currentStatusKey === 'doing') currentStatusKey = 'doing_nails';
+      if (currentStatusKey === 'done') currentStatusKey = 'delivered';
+      
+      const currentStatusInfo = STATUS_MAP[currentStatusKey] || STATUS_MAP['waiting'];
+      const percent = currentStatusInfo.percent;
+      const isDelivered = currentStatusKey === 'delivered';
 
-          <div className="flex justify-between items-end mt-1">
-            <div className="flex-1 min-w-0 mr-4 flex flex-col">
-              <span className={`text-[10px] font-bold truncate ${task.status === 'done' ? 'line-through' : ''}`} style={{ color: task.status === 'done' ? '#e5a9bf40' : '#e5a9bf80' }}>{task.type}</span>
-              {task.details && (
-                <span className={`text-[11px] font-medium truncate mt-0.5 ${task.status === 'done' ? '' : ''}`} style={{ color: task.status === 'done' ? '#fdd6dd30' : '#fdd6dd90' }}>{task.details}</span>
+      return (
+        <div onClick={() => isAdmin && onEdit(task)} className={`relative mb-2 rounded-[22px] p-3 transition-all shadow-sm group backdrop-blur-sm ${isAdmin ? 'active:scale-[0.97] cursor-pointer' : ''}`}
+          style={{
+            backgroundColor: isDelivered ? COLORS.cardBgDone : COLORS.cardBg,
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: isDelivered ? 'transparent' : '#e5a9bf30',
+            opacity: isDelivered ? 0.7 : 1
+          }}
+        >
+          {percent > 0 && percent < 100 && (
+            <div className="absolute inset-0 pointer-events-none z-0">
+              <div className="absolute -bottom-2 -left-3 text-[14px] animate-float-particle-1 drop-shadow-sm">✨</div>
+              <div className="absolute top-[30%] -right-4 text-[10px] animate-float-particle-1 drop-shadow-sm" style={{ animationDelay: '1.2s' }}>✨</div>
+            </div>
+          )}
+          <div className="absolute left-2 top-3 bottom-3 w-1 rounded-full shadow-sm z-10" style={{ backgroundColor: task.channel === 'LINE' ? '#a8d5a2' : task.channel === 'FB' || task.channel === 'FACEBOOK' ? '#a0b9cc' : task.channel === 'IG' ? '#e5a9bf' : '#fdd6dd' }}></div>
+          
+          <div className="pl-3 pr-1 relative z-10">
+            <div className="flex justify-between items-start mb-1">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="font-bold text-base truncate" style={{ color: COLORS.textMain }}>{task.client}</span>
+                <span className={`text-[7px] px-1.5 py-0.5 rounded-md font-black uppercase border ${
+                  task.channel === 'LINE' ? 'border-[#a8d5a2]/30' :
+                  task.channel === 'FB' || task.channel === 'FACEBOOK' ? 'border-[#a0b9cc]/30' :
+                  task.channel === 'IG' ? 'border-[#e5a9bf]/30' :
+                  'border-[#fdd6dd]/20'
+                }`} style={{ color: COLORS.textSoft, backgroundColor: '#24192210' }}>{task.channel}</span>
+                {task.priority === 'urgent' && <span className="text-[9px] font-bold animate-pulse px-2 py-0.5 rounded-full shadow-sm" style={{ color: COLORS.pinkDeep, backgroundColor: COLORS.buttonBg }}>{'\u{1F525}'} ด่วน</span>}
+              </div>
+              <div className="flex items-center gap-1 text-[9px] font-black px-2.5 py-0.5 rounded-lg shadow-sm" style={{ color: COLORS.pinkDeep, backgroundColor: `${COLORS.cardInner}80`, borderWidth: '1px', borderColor: '#e5a9bf40' }}>
+                <IconCalendar size={11} style={{ color: COLORS.pinkDeep }} />
+                {new Date(task.deadline).toLocaleDateString('th-TH', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+              </div>
+            </div>
+
+            <div className="flex justify-between items-end mt-1">
+              <div className="flex-1 min-w-0 mr-4 flex flex-col">
+                <span className={`text-[10px] font-bold truncate ${isDelivered ? 'line-through' : ''}`} style={{ color: isDelivered ? '#e5a9bf40' : '#e5a9bf80' }}>{task.type}</span>
+                {task.details && (
+                  <span className={`text-[11px] font-medium truncate mt-0.5`} style={{ color: isDelivered ? '#fdd6dd30' : '#fdd6dd90' }}>{task.details}</span>
+                )}
+              </div>
+
+              {isAdmin ? (
+                <div onClick={(e) => e.stopPropagation()} className="relative">
+                  <select
+                    value={currentStatusKey}
+                    onChange={(e) => onStatusChange(task.id, e.target.value)}
+                    className="appearance-none bg-[#241a22] text-[#fdd6dd] text-[10px] font-bold px-3 py-1.5 pr-6 rounded-[8px] outline-none cursor-pointer shadow-sm border border-[#e5a9bf40] hover:border-[#e5a9bf] transition-colors"
+                  >
+                    <option value="waiting">รอคิว</option>
+                    <option value="designing">กำลังออกแบบ</option>
+                    <option value="design_sent">ส่งแบบแล้ว</option>
+                    <option value="doing_nails">กำลังทำเล็บ</option>
+                    <option value="nails_done">เล็บเสร็จแล้ว</option>
+                    <option value="delivered">ส่งแล้ว</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-[#e5a9bf]">
+                    <svg className="fill-current h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <span className="text-[10px] font-bold flex items-center gap-1 px-2 py-1 rounded-md shadow-sm" style={{ color: currentStatusInfo.color, backgroundColor: `${COLORS.buttonBg}`, borderWidth: '1px', borderColor: '#e5a9bf40' }}>
+                    {currentStatusInfo.label}
+                  </span>
+                </div>
               )}
             </div>
 
-            {isAdmin ? (
-              <div className="flex gap-1.5">
-                <button onClick={(e) => onToggleDoing(e, task.id)} className={`relative w-[28px] h-[28px] rounded-[8px] flex items-center justify-center transition-all active:scale-90`} style={{ color: task.status === 'doing' ? COLORS.pinkDeep : '#e5a9bf40', backgroundColor: task.status === 'doing' ? '#e5a9bf20' : COLORS.buttonBg, borderWidth: '2px', borderColor: `${COLORS.cardBorder}60` }}>
-                  <div className={`${task.status === 'doing' ? 'animate-spin-slow' : ''} flex items-center justify-center`}>
-                    <IconLoader size={14} />
-                  </div>
-                </button>
-                <button onClick={(e) => onToggleStatus(e, task.id)} className={`relative w-[28px] h-[28px] rounded-[8px] flex items-center justify-center transition-all active:scale-90`} style={{ color: task.status === 'done' ? COLORS.pinkDeep : '#e5a9bf40', backgroundColor: task.status === 'done' ? '#e5a9bf20' : COLORS.buttonBg, borderWidth: '2px', borderColor: `${COLORS.cardBorder}60` }}>
-                  <IconCheck size={16} />
-                </button>
+            {/* แถบ Progress Bar ขอบเรืองแสง d18a9e (หนา 2px เข้มขึ้น) ไดนามิกแบบ Shine Sweep สี fdd6dd */}
+            <div className="mt-3 w-full h-[12px] rounded-full overflow-hidden relative" 
+                 style={{ 
+                   backgroundColor: '#241a22', 
+                   border: '2px solid #d18a9e', /* Updated thickness (1->2) and color (#e5a9bf->#d18a9e) */
+                   boxShadow: '0 0 8px #d18a9e80, inset 0 1px 3px rgba(0,0,0,0.5)' /* Updated glow color to match new darker border and made it slightly stronger */
+                 }}>
+              <div 
+                className="h-full rounded-full transition-all duration-1000 ease-in-out relative overflow-hidden"
+                style={{ 
+                  width: `${percent}%`, 
+                  backgroundColor: '#fdd6dd', /* Background color inside stays fdd6dd */
+                  boxShadow: `0 0 8px #fdd6dd80`
+                }}
+              >
+                {/* White line sweep animation - kept as requested */}
+                <div className="absolute top-0 bottom-0 w-[60%] animate-shine-sweep"
+                     style={{
+                       background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent)'
+                     }}>
+                </div>
               </div>
-            ) : (
-              <div className="flex items-center">
-                {task.status === 'doing' && <span className="text-[10px] font-bold flex items-center gap-1 px-2 py-1 rounded-md shadow-sm" style={{ color: '#e5a9bf', backgroundColor: '#e5a9bf15', borderWidth: '1px', borderColor: '#e5a9bf40' }}><IconLoader size={10} className="animate-spin-slow"/> กำลังทำ</span>}
-                {task.status === 'done' && <span className="text-[10px] font-bold flex items-center gap-1 px-2 py-1 rounded-md shadow-sm" style={{ color: '#fdd6dd', backgroundColor: '#fdd6dd15', borderWidth: '1px', borderColor: '#fdd6dd40' }}><IconCheck size={10} /> เสร็จแล้ว</span>}
-                {task.status === 'todo' && <span className="text-[10px] font-bold flex items-center gap-1 px-2 py-1 rounded-md shadow-sm" style={{ color: '#e5a9bf60', backgroundColor: COLORS.buttonBg, borderWidth: '1px', borderColor: '#e5a9bf20' }}><IconClock size={10} /> รอคิว</span>}
-              </div>
-            )}
+            </div>
+
           </div>
         </div>
-      </div>
-    ));
+      );
+    });
 
     const CalendarView = React.memo(({ currentMonth, setCurrentMonth, selectedDate, setSelectedDate, today, tasks }) => {
       const year = currentMonth.getFullYear();
@@ -492,7 +518,8 @@
       }, []);
 
       const todayTasks = useMemo(() => tasks.filter(t => t.deadline === today), [tasks, today]);
-      const doneToday = useMemo(() => todayTasks.filter(t => t.status === 'done').length, [todayTasks]);
+      
+      const doneToday = useMemo(() => todayTasks.filter(t => t.status === 'delivered' || t.status === 'done').length, [todayTasks]);
       const progress = todayTasks.length === 0 ? 0 : Math.round((doneToday / todayTasks.length) * 100);
 
       const nextQueueDate = useMemo(() => {
@@ -510,25 +537,11 @@
         return today;
       }, [tasks, selectedNextDate]);
 
-      const waitingCount = useMemo(() => tasks.filter(t => t.status !== 'done').length, [tasks]);
+      const waitingCount = useMemo(() => tasks.filter(t => t.status !== 'delivered' && t.status !== 'done').length, [tasks]);
 
-      const toggleStatus = useCallback((e, id) => {
-        e.stopPropagation();
+      const handleStatusChange = useCallback((id, newStatus) => {
         setTasks(prev => prev.map(t => {
           if (t.id === id) {
-            const newStatus = t.status === 'done' ? 'todo' : 'done';
-            fetchAPI({ action: 'updateTaskStatus', taskId: id, newStatus: newStatus });
-            return { ...t, status: newStatus };
-          }
-          return t;
-        }));
-      }, []);
-
-      const toggleDoing = useCallback((e, id) => {
-        e.stopPropagation();
-        setTasks(prev => prev.map(t => {
-          if (t.id === id) {
-            const newStatus = t.status === 'doing' ? 'todo' : 'doing';
             fetchAPI({ action: 'updateTaskStatus', taskId: id, newStatus: newStatus });
             return { ...t, status: newStatus };
           }
@@ -554,6 +567,7 @@
           priority: formData.get('priority') ? 'urgent' : 'normal',
           deadline: formData.get('deadline'),
           details: formData.get('details'),
+          status: formData.get('status') || 'waiting'
         };
         fetchAPI({ action: 'saveOrUpdateTask', task: taskData })
           .then(res => {
@@ -586,7 +600,8 @@
 
       const filteredAllTasks = useMemo(() => tasks.filter(t => {
         const matchSearch = t.type.toLowerCase().includes(searchQuery.toLowerCase()) || t.client.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchFilter = filterType === 'all' || (filterType === 'pending' && t.status !== 'done') || (filterType === 'done' && t.status === 'done');
+        const isTaskDone = t.status === 'delivered' || t.status === 'done';
+        const matchFilter = filterType === 'all' || (filterType === 'pending' && !isTaskDone) || (filterType === 'done' && isTaskDone);
         return matchSearch && matchFilter;
       }), [tasks, searchQuery, filterType]);
 
@@ -670,7 +685,7 @@
                     <div className="h-[1px] flex-1 mx-3" style={{ background: `linear-gradient(to right, ${COLORS.pink}40, transparent)` }}></div>
                   </div>
                   <div className="space-y-1">
-                    {todayTasks.length > 0 ? todayTasks.map(t => <TaskCard key={t.id} task={t} isAdmin={isAdmin} onEdit={handleEditTask} onToggleDoing={toggleDoing} onToggleStatus={toggleStatus} />) : (
+                    {todayTasks.length > 0 ? todayTasks.map(t => <TaskCard key={t.id} task={t} isAdmin={isAdmin} onEdit={handleEditTask} onStatusChange={handleStatusChange} />) : (
                       <div className="text-center py-10 rounded-[28px] border-2 border-dashed" style={{ backgroundColor: `${COLORS.cardWhite}20`, borderColor: '#e5a9bf30' }}>
                         <p className="text-[9px] font-bold uppercase tracking-widest opacity-40" style={{ color: COLORS.pinkDeep }}>Sky is clear ✨</p>
                       </div>
@@ -703,7 +718,7 @@
                   {isCalendarView && <CalendarView currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} selectedDate={selectedDate} setSelectedDate={setSelectedDate} today={today} tasks={tasks} />}
 
                   <div className="space-y-1">
-                    {displayedTasks.length > 0 ? displayedTasks.map(t => <TaskCard key={t.id} task={t} isAdmin={isAdmin} onEdit={handleEditTask} onToggleDoing={toggleDoing} onToggleStatus={toggleStatus} />) : (
+                    {displayedTasks.length > 0 ? displayedTasks.map(t => <TaskCard key={t.id} task={t} isAdmin={isAdmin} onEdit={handleEditTask} onStatusChange={handleStatusChange} />) : (
                       <div className="text-center py-10 rounded-[28px] border-2 border-dashed shadow-sm mt-4" style={{ backgroundColor: `${COLORS.cardWhite}20`, borderColor: '#e5a9bf40' }}>
                         <p className="text-[10px] font-black uppercase tracking-widest opacity-50" style={{ color: COLORS.textSoft }}>
                           {isCalendarView ? "วันนี้คิวว่าง ✨" : "No records found ✨"}
@@ -770,6 +785,20 @@
                       <datalist id="channelsList">
                         {channels.map(ch => <option key={ch} value={ch} />)}
                       </datalist>
+                    </div>
+
+                    <div className="flex flex-col gap-2 relative">
+                      <select name="status" defaultValue={editingTask?.status || 'waiting'} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm appearance-none cursor-pointer" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }}>
+                        <option value="waiting">รอคิว (0%)</option>
+                        <option value="designing">กำลังออกแบบ (20%)</option>
+                        <option value="design_sent">ส่งแบบแล้ว (40%)</option>
+                        <option value="doing_nails">กำลังทำเล็บ (60%)</option>
+                        <option value="nails_done">เล็บเสร็จแล้ว (80%)</option>
+                        <option value="delivered">ส่งแล้ว (100%)</option>
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4" style={{ color: COLORS.textSoft }}>
+                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
                     </div>
 
                     <textarea name="details" rows="2" defaultValue={editingTask?.details || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all resize-none" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)..."></textarea>
@@ -924,6 +953,10 @@
               0%   { background-position: -100% 0%; }
               100% { background-position: 200% 0%; }
             }
+            @keyframes shine-sweep {
+              0% { transform: translateX(-200%) skewX(-15deg); }
+              100% { transform: translateX(300%) skewX(-15deg); }
+            }
 
             .animate-orb-1 { animation: orb-1 18s ease-in-out infinite; }
             .animate-orb-2 { animation: orb-2 22s ease-in-out infinite; }
@@ -932,6 +965,7 @@
             .animate-orb-5 { animation: orb-5 20s ease-in-out infinite 1s; }
             .animate-gradient-shift { animation: gradient-shift 15s ease infinite; }
             .animate-shimmer-sweep { animation: shimmer-sweep 8s linear infinite; }
+            .animate-shine-sweep { animation: shine-sweep 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 
             /* ── UI animations ── */
             @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
@@ -965,5 +999,4 @@
     root.render(<App />);
   </script>
 </body>
-
 </html>
