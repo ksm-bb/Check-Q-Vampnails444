@@ -635,7 +635,7 @@
           if (finalUrl && typeof finalUrl === 'string') {
             const urlMatch = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
             if (urlMatch && urlMatch[1]) {
-              finalUrl = `https://drive.google.com/uc?id=${urlMatch[1]}`;
+              finalUrl = `https://lh3.googleusercontent.com/d/${match[1]}`;
             }
           }
 
@@ -1102,7 +1102,7 @@
                   if (tempImageUrl) {
                     let finalUrl = tempImageUrl;
                     const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                    if (match && match[1]) finalUrl = `https://drive.google.com/uc?id=${match[1]}`;
+                    if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${match[1]}`;
                     setProfileImage(finalUrl);
                     fetchAPI({ action: 'saveProfileImage', imageUrl: finalUrl });
                   }
@@ -1127,7 +1127,7 @@
                   if (tempBannerUrl) {
                     let finalUrl = tempBannerUrl;
                     const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                    if (match && match[1]) finalUrl = `https://drive.google.com/uc?id=${match[1]}`;
+                    if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${match[1]}`;
                     setBannerImage(finalUrl);
                     toggleBannerVisibility(true);
                     fetchAPI({ action: 'saveBannerImage', imageUrl: finalUrl });
@@ -1277,3 +1277,4 @@
   </script>
 </body>
 </html>
+
