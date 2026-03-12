@@ -363,7 +363,9 @@
     });
 
     const PromoSlot = React.memo(({ data, index, isAdmin, onEdit, onClickLink }) => {
-      const hasContent = data.img || data.text || data.link;
+      // ดักจับกรณีข้อมูลโหลดมาไม่สมบูรณ์
+      const safeData = data || { img: '', text: '', link: '' };
+      const hasContent = safeData.img || safeData.text || safeData.link;
 
       if (!hasContent && !isAdmin) return <div className="w-full aspect-square"></div>;
 
@@ -378,8 +380,8 @@
               cursor: isAdmin ? 'pointer' : 'default'
             }}
           >
-            {data.img ? (
-              <img src={data.img} className="w-full h-full object-cover" alt={`Promo ${index + 1}`} />
+            {safeData.img ? (
+              <img src={safeData.img} className="w-full h-full object-cover" alt={`Promo ${index + 1}`} />
             ) : isAdmin ? (
               <span className="text-[11px] font-bold flex flex-col items-center gap-1.5 opacity-50" style={{ color: COLORS.textSoft }}>
                 <IconPlus size={18} />
@@ -394,21 +396,21 @@
             )}
           </div>
           
-          {(data.text || isAdmin) && (
+          {(safeData.text || isAdmin) && (
             <button 
               onClick={() => {
                 if (isAdmin) onEdit();
-                else if (data.link) onClickLink(data.link);
+                else if (safeData.link) onClickLink(safeData.link);
               }}
               className="h-[40px] w-full mt-2.5 rounded-[16px] shadow-sm flex items-center justify-center text-[11px] font-black transition-transform active:scale-95 px-3 truncate"
               style={{ 
                 backgroundColor: COLORS.pinkDeep, 
                 color: COLORS.purple,
-                cursor: (isAdmin || data.link) ? 'pointer' : 'default',
-                opacity: (!data.text && isAdmin) ? 0.6 : 1
+                cursor: (isAdmin || safeData.link) ? 'pointer' : 'default',
+                opacity: (!safeData.text && isAdmin) ? 0.6 : 1
               }}
             >
-              {data.text ? data.text : (isAdmin ? '+ เพิ่มข้อความปุ่ม' : '')}
+              {safeData.text ? safeData.text : (isAdmin ? '+ เพิ่มข้อความปุ่ม' : '')}
             </button>
           )}
         </div>
@@ -561,7 +563,12 @@
               if (response.data.bannerImage) setBannerImage(response.data.bannerImage);
               if (response.data.bannerVisible !== undefined) setIsBannerVisible(response.data.bannerVisible);
               if (response.data.lockedNextDate) setSelectedNextDate(response.data.lockedNextDate);
-              if (response.data.promoSlots) setPromoSlots(response.data.promoSlots);
+              
+              // โหลด Promo Slots ถ้ามีข้อมูล ไม่งั้นใช้ค่าเริ่มต้น
+              if (response.data.promoSlots && response.data.promoSlots.length === 3) {
+                setPromoSlots(response.data.promoSlots);
+              }
+              
               if (response.data.notes) setNotes(response.data.notes);
               if (response.data.socialLinks) {
                 setSocialLinks({
@@ -611,49 +618,54 @@
         }
       };
 
-      const openLinkModal = () => {
-        if (isAdmin) {
-          setTempLinks({
-            fb: socialLinks.fb || '',
-            ig: socialLinks.ig || '',
-            tiktok: socialLinks.tiktok || ''
-          });
-          setShowLinkModal(true);
-        }
-      };
-
-      const handleSaveLink = (e) => {
-        e.preventDefault();
-        setSocialLinks(tempLinks);
-        fetchAPI({ action: 'saveSocialLinks', links: tempLinks });
-        setShowLinkModal(false);
-      };
-
       const openPromoModal = (index) => {
         setEditingPromoIndex(index);
-        setTempPromoData(promoSlots[index]);
+        // Fallback เผื่อค่าใน array หายไป
+        setTempPromoData(promoSlots[index] || { img: '', text: '', link: '' });
         setShowPromoModal(true);
       };
 
       const handleSavePromo = (e) => {
         e.preventDefault();
-        let finalUrl = tempPromoData.img;
-        const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-        if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${m[1]}`;
+        try {
+          const currentData = tempPromoData || { img: '', text: '', link: '' };
+          let finalUrl = currentData.img || '';
 
-        const newSlots = [...promoSlots];
-        newSlots[editingPromoIndex] = { ...tempPromoData, img: finalUrl };
-        setPromoSlots(newSlots);
-        fetchAPI({ action: 'savePromoSlots', slots: newSlots });
-        setShowPromoModal(false);
+          // ป้องกันการ Error (m is not defined) โดยเช็ค Type ก่อนใช้ Regex .match
+          if (finalUrl && typeof finalUrl === 'string') {
+            const urlMatch = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (urlMatch && urlMatch[1]) {
+              finalUrl = `https://drive.google.com/uc?id=${urlMatch[1]}`;
+            }
+          }
+
+          const newSlots = [...promoSlots];
+          if (editingPromoIndex !== null && editingPromoIndex >= 0) {
+            newSlots[editingPromoIndex] = { 
+              img: finalUrl, 
+              text: currentData.text || '', 
+              link: currentData.link || '' 
+            };
+            setPromoSlots(newSlots);
+            fetchAPI({ action: 'savePromoSlots', slots: newSlots });
+          }
+          
+          setShowPromoModal(false);
+          setEditingPromoIndex(null);
+        } catch (err) {
+          console.error("Promo Save Error:", err);
+        }
       };
 
       const handleClearPromo = () => {
-        const newSlots = [...promoSlots];
-        newSlots[editingPromoIndex] = { img: '', text: '', link: '' };
-        setPromoSlots(newSlots);
-        fetchAPI({ action: 'savePromoSlots', slots: newSlots });
+        if (editingPromoIndex !== null && editingPromoIndex >= 0) {
+          const newSlots = [...promoSlots];
+          newSlots[editingPromoIndex] = { img: '', text: '', link: '' };
+          setPromoSlots(newSlots);
+          fetchAPI({ action: 'savePromoSlots', slots: newSlots });
+        }
         setShowPromoModal(false);
+        setEditingPromoIndex(null);
       };
 
       const handlePromoLinkClick = (url) => {
@@ -964,11 +976,11 @@
             {showPromoModal && (
               <div className="fixed inset-0 z-[120] flex items-center justify-center p-6 backdrop-blur-[2px] animate-fadeIn" style={{ backgroundColor: '#241a2240' }}>
                 <form onSubmit={handleSavePromo} className="backdrop-blur-xl w-full max-w-xs rounded-[35px] p-6 shadow-2xl animate-slideUp" style={{ backgroundColor: `${COLORS.modalBg}f5`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
-                  <h3 className="text-sm font-black mb-4 text-center" style={{ color: COLORS.textMain }}>ตั้งค่ารูปไฮไลท์ช่องที่ {editingPromoIndex + 1} ✨</h3>
+                  <h3 className="text-sm font-black mb-4 text-center" style={{ color: COLORS.textMain }}>ตั้งค่ารูปไฮไลท์ช่องที่ {editingPromoIndex !== null ? editingPromoIndex + 1 : ''} ✨</h3>
                   <div className="space-y-2">
-                    <input type="url" value={tempPromoData.img} onChange={(e) => setTempPromoData({...tempPromoData, img: e.target.value})} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ลิงก์รูปภาพ (Google Drive)" />
-                    <input type="text" value={tempPromoData.text} onChange={(e) => setTempPromoData({...tempPromoData, text: e.target.value})} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ข้อความบนปุ่ม (เช่น กดดูผลงาน)" />
-                    <input type="url" value={tempPromoData.link} onChange={(e) => setTempPromoData({...tempPromoData, link: e.target.value})} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ลิงก์เมื่อกดปุ่ม (URL)" />
+                    <input type="url" value={tempPromoData?.img || ''} onChange={(e) => setTempPromoData({...tempPromoData, img: e.target.value})} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ลิงก์รูปภาพ (Google Drive)" />
+                    <input type="text" value={tempPromoData?.text || ''} onChange={(e) => setTempPromoData({...tempPromoData, text: e.target.value})} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ข้อความบนปุ่ม (เช่น กดดูผลงาน)" />
+                    <input type="url" value={tempPromoData?.link || ''} onChange={(e) => setTempPromoData({...tempPromoData, link: e.target.value})} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ลิงก์เมื่อกดปุ่ม (URL)" />
                     
                     <div className="flex items-center gap-2 mt-3">
                       <button type="submit" className="flex-1 py-3.5 rounded-2xl font-black text-xs shadow-lg active:scale-95 transition-all" style={{ backgroundColor: '#e5a9bf', color: '#241a22' }}>บันทึก</button>
@@ -976,7 +988,7 @@
                         <IconTrash size={18} />
                       </button>
                     </div>
-                    <button type="button" onClick={() => setShowPromoModal(false)} className="w-full text-[9px] font-bold mt-2 uppercase tracking-widest opacity-40" style={{ color: COLORS.textSoft }}>Close</button>
+                    <button type="button" onClick={() => { setShowPromoModal(false); setEditingPromoIndex(null); }} className="w-full text-[9px] font-bold mt-2 uppercase tracking-widest opacity-40" style={{ color: COLORS.textSoft }}>Close</button>
                   </div>
                 </form>
               </div>
@@ -1090,7 +1102,7 @@
                   if (tempImageUrl) {
                     let finalUrl = tempImageUrl;
                     const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                    if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${m[1]}`;
+                    if (match && match[1]) finalUrl = `https://drive.google.com/uc?id=${match[1]}`;
                     setProfileImage(finalUrl);
                     fetchAPI({ action: 'saveProfileImage', imageUrl: finalUrl });
                   }
@@ -1115,7 +1127,7 @@
                   if (tempBannerUrl) {
                     let finalUrl = tempBannerUrl;
                     const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                    if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${m[1]}`;
+                    if (match && match[1]) finalUrl = `https://drive.google.com/uc?id=${match[1]}`;
                     setBannerImage(finalUrl);
                     toggleBannerVisibility(true);
                     fetchAPI({ action: 'saveBannerImage', imageUrl: finalUrl });
