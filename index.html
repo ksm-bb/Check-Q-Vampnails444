@@ -34,6 +34,7 @@
     const IconChevronLeft = ({size=24, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="15 18 9 12 15 6"></polyline></svg>;
     const IconChevronRight = ({size=24, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="9 18 15 12 9 6"></polyline></svg>;
     const IconTrash = ({size=24, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
+    const IconEdit = ({size=24, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>;
 
     // Social Icons (Minimal Line style)
     const IconFacebook = ({size=24, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>;
@@ -41,7 +42,7 @@
     const IconTikTok = ({size=24, className=""}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 2v15a4 4 0 1 1-4-4c.5 0 1 .1 1.4 .3"></path><path d="M12 6a5 5 0 0 0 5 5v3a8 8 0 0 1-5-2"></path></svg>;
 
     // ==========================================
-    // 🎨 COLORS — Pink Palette from Noguchi Design
+    // COLORS — Pink Palette from Noguchi Design
     // ==========================================
     const COLORS = {
       blue: '#372d36',
@@ -262,7 +263,7 @@
       const isDelivered = currentStatusKey === 'delivered';
 
       return (
-        <div onClick={() => isAdmin && onEdit(task)} className={`relative mb-2 rounded-[22px] p-3 transition-all shadow-sm group backdrop-blur-sm ${isAdmin ? 'active:scale-[0.97] cursor-pointer' : ''}`}
+        <div onClick={() => onEdit(task)} className={`relative mb-2 rounded-[22px] p-3 transition-all shadow-sm group backdrop-blur-sm active:scale-[0.97] cursor-pointer`}
           style={{
             backgroundColor: isDelivered ? COLORS.cardBgDone : COLORS.cardBg,
             borderWidth: '1px',
@@ -280,18 +281,20 @@
           <div className="absolute left-2 top-3 bottom-3 w-1 rounded-full shadow-sm z-10" style={{ backgroundColor: task.channel === 'LINE' ? '#a8d5a2' : task.channel === 'FB' || task.channel === 'FACEBOOK' ? '#a0b9cc' : task.channel === 'IG' ? '#e5a9bf' : '#fdd6dd' }}></div>
           
           <div className="pl-3 pr-1 relative z-10">
-            <div className="flex justify-between items-start mb-1">
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="font-bold text-base truncate" style={{ color: COLORS.textMain }}>{task.client}</span>
-                <span className={`text-[7px] px-1.5 py-0.5 rounded-md font-black uppercase border ${
+            <div className="flex justify-between items-start mb-1 gap-2">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <span className="font-bold text-base truncate block" style={{ color: COLORS.textMain }}>
+                  {task.client}{task.price ? ` ฿${task.price}` : ''}
+                </span>
+                <span className={`shrink-0 text-[7px] px-1.5 py-0.5 rounded-md font-black uppercase border ${
                   task.channel === 'LINE' ? 'border-[#a8d5a2]/30' :
                   task.channel === 'FB' || task.channel === 'FACEBOOK' ? 'border-[#a0b9cc]/30' :
                   task.channel === 'IG' ? 'border-[#e5a9bf]/30' :
                   'border-[#fdd6dd]/20'
                 }`} style={{ color: COLORS.textSoft, backgroundColor: '#24192210' }}>{task.channel}</span>
-                {task.priority === 'urgent' && <span className="text-[9px] font-bold animate-pulse px-2 py-0.5 rounded-full shadow-sm" style={{ color: COLORS.pinkDeep, backgroundColor: COLORS.buttonBg }}>{'\u{1F525}'} ด่วน</span>}
+                {task.priority === 'urgent' && <span className="shrink-0 text-[9px] font-bold animate-pulse px-2 py-0.5 rounded-full shadow-sm" style={{ color: COLORS.pinkDeep, backgroundColor: COLORS.buttonBg }}>{'\u{1F525}'} ด่วน</span>}
               </div>
-              <div className="flex items-center gap-1 text-[9px] font-black px-2.5 py-0.5 rounded-lg shadow-sm" style={{ color: COLORS.pinkDeep, backgroundColor: `${COLORS.cardInner}80`, borderWidth: '1px', borderColor: '#e5a9bf40' }}>
+              <div className="shrink-0 flex items-center gap-1 text-[9px] font-black px-2.5 py-0.5 rounded-lg shadow-sm" style={{ color: COLORS.pinkDeep, backgroundColor: `${COLORS.cardInner}80`, borderWidth: '1px', borderColor: '#e5a9bf40' }}>
                 <IconCalendar size={11} style={{ color: COLORS.pinkDeep }} />
                 {new Date(task.deadline).toLocaleDateString('th-TH', { day: '2-digit', month: '2-digit', year: '2-digit' })}
               </div>
@@ -306,7 +309,7 @@
               </div>
 
               {isAdmin ? (
-                <div onClick={(e) => e.stopPropagation()} className="relative">
+                <div onClick={(e) => e.stopPropagation()} className="relative shrink-0">
                   <select
                     value={currentStatusKey}
                     onChange={(e) => onStatusChange(task.id, e.target.value)}
@@ -324,7 +327,7 @@
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center">
+                <div className="flex items-center shrink-0">
                   <span className="text-[10px] font-bold flex items-center gap-1 px-2 py-1 rounded-md shadow-sm" style={{ color: currentStatusInfo.color, backgroundColor: `${COLORS.buttonBg}`, borderWidth: '1px', borderColor: '#e5a9bf40' }}>
                     {currentStatusInfo.label}
                   </span>
@@ -355,6 +358,59 @@
             </div>
 
           </div>
+        </div>
+      );
+    });
+
+    const PromoSlot = React.memo(({ data, index, isAdmin, onEdit, onClickLink }) => {
+      const hasContent = data.img || data.text || data.link;
+
+      if (!hasContent && !isAdmin) return <div className="w-full aspect-square"></div>;
+
+      return (
+        <div className="w-full flex flex-col">
+          <div 
+            onClick={() => isAdmin && onEdit()}
+            className={`w-full aspect-square rounded-[24px] overflow-hidden relative shadow-sm transition-all duration-300 ${hasContent ? 'border-none' : 'border-2 border-dashed flex flex-col items-center justify-center hover:opacity-70'}`}
+            style={{ 
+              backgroundColor: hasContent ? COLORS.cardBg : `${COLORS.cardWhite}33`,
+              borderColor: hasContent ? 'transparent' : COLORS.cardBorder,
+              cursor: isAdmin ? 'pointer' : 'default'
+            }}
+          >
+            {data.img ? (
+              <img src={data.img} className="w-full h-full object-cover" alt={`Promo ${index + 1}`} />
+            ) : isAdmin ? (
+              <span className="text-[11px] font-bold flex flex-col items-center gap-1.5 opacity-50" style={{ color: COLORS.textSoft }}>
+                <IconPlus size={18} />
+                เพิ่มรูปภาพ
+              </span>
+            ) : null}
+
+            {isAdmin && hasContent && (
+              <div className="absolute top-2 right-2 p-1.5 backdrop-blur-md rounded-full shadow-sm bg-[#241a22cc] text-[#e5a9bf] hover:scale-110 transition-transform cursor-pointer" onClick={(e) => { e.stopPropagation(); onEdit(); }}>
+                 <IconEdit size={14} />
+              </div>
+            )}
+          </div>
+          
+          {(data.text || isAdmin) && (
+            <button 
+              onClick={() => {
+                if (isAdmin) onEdit();
+                else if (data.link) onClickLink(data.link);
+              }}
+              className="h-[40px] w-full mt-2.5 rounded-[16px] shadow-sm flex items-center justify-center text-[11px] font-black transition-transform active:scale-95 px-3 truncate"
+              style={{ 
+                backgroundColor: COLORS.pinkDeep, 
+                color: COLORS.purple,
+                cursor: (isAdmin || data.link) ? 'pointer' : 'default',
+                opacity: (!data.text && isAdmin) ? 0.6 : 1
+              }}
+            >
+              {data.text ? data.text : (isAdmin ? '+ เพิ่มข้อความปุ่ม' : '')}
+            </button>
+          )}
         </div>
       );
     });
@@ -426,6 +482,15 @@
       const [taskTypes, setTaskTypes] = useState(['Logo', 'Banner', 'Artwork']);
       const [channels, setChannels] = useState(['LINE', 'FB', 'IG']);
 
+      const [promoSlots, setPromoSlots] = useState([
+        { img: '', text: '', link: '' },
+        { img: '', text: '', link: '' },
+        { img: '', text: '', link: '' }
+      ]);
+      const [showPromoModal, setShowPromoModal] = useState(false);
+      const [editingPromoIndex, setEditingPromoIndex] = useState(null);
+      const [tempPromoData, setTempPromoData] = useState({ img: '', text: '', link: '' });
+
       const [isLoading, setIsLoading] = useState(true);
       const [isSaving, setIsSaving] = useState(false);
       const [isDeleting, setIsDeleting] = useState(false);
@@ -467,7 +532,7 @@
       const [selectedNextDate, setSelectedNextDate] = useState('');
       const [isBouncing, setIsBouncing] = useState(false);
 
-      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyOpgLizLKtv37BZzmwpGZeOlHffT-ATKCapN09w-HPwE3LIKGVtbrIethVI4wsfeFKOA/exec";
+      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwVMvK6l0X0oOwzngNPoGlO8Hp57uKn4CcZey-6u67mCoEsYnwCkxeUh9iXXIAVnOXhIw/exec";
 
       const fetchAPI = async (payload) => {
         try {
@@ -496,7 +561,7 @@
               if (response.data.bannerImage) setBannerImage(response.data.bannerImage);
               if (response.data.bannerVisible !== undefined) setIsBannerVisible(response.data.bannerVisible);
               if (response.data.lockedNextDate) setSelectedNextDate(response.data.lockedNextDate);
-              // ดึงข้อมูล Notes & Social
+              if (response.data.promoSlots) setPromoSlots(response.data.promoSlots);
               if (response.data.notes) setNotes(response.data.notes);
               if (response.data.socialLinks) {
                 setSocialLinks({
@@ -564,6 +629,37 @@
         setShowLinkModal(false);
       };
 
+      const openPromoModal = (index) => {
+        setEditingPromoIndex(index);
+        setTempPromoData(promoSlots[index]);
+        setShowPromoModal(true);
+      };
+
+      const handleSavePromo = (e) => {
+        e.preventDefault();
+        let finalUrl = tempPromoData.img;
+        const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${m[1]}`;
+
+        const newSlots = [...promoSlots];
+        newSlots[editingPromoIndex] = { ...tempPromoData, img: finalUrl };
+        setPromoSlots(newSlots);
+        fetchAPI({ action: 'savePromoSlots', slots: newSlots });
+        setShowPromoModal(false);
+      };
+
+      const handleClearPromo = () => {
+        const newSlots = [...promoSlots];
+        newSlots[editingPromoIndex] = { img: '', text: '', link: '' };
+        setPromoSlots(newSlots);
+        fetchAPI({ action: 'savePromoSlots', slots: newSlots });
+        setShowPromoModal(false);
+      };
+
+      const handlePromoLinkClick = (url) => {
+        if (url) window.open(url, '_blank');
+      };
+
       const today = useMemo(() => {
         const d = new Date();
         return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -608,6 +704,7 @@
 
       const handleSaveTask = (e) => {
         e.preventDefault();
+        if (!isAdmin) return;
         setIsSaving(true);
         const formData = new FormData(e.target);
         const taskData = {
@@ -619,7 +716,8 @@
           priority: formData.get('priority') ? 'urgent' : 'normal',
           deadline: formData.get('deadline'),
           details: formData.get('details'),
-          status: formData.get('status') || 'waiting'
+          status: formData.get('status') || (editingTask ? editingTask.status : 'waiting'),
+          price: formData.get('price') || ''
         };
         fetchAPI({ action: 'saveOrUpdateTask', task: taskData })
           .then(res => {
@@ -632,7 +730,7 @@
       };
 
       const executeDeleteTask = () => {
-        if (!taskToDelete) return;
+        if (!taskToDelete || !isAdmin) return;
         setIsDeleting(true);
         fetchAPI({ action: 'deleteTask', taskId: taskToDelete })
           .then(() => {
@@ -737,7 +835,7 @@
                   </div>
 
                   {/* โน้ต (บรรทัดเดียว) & ปุ่มโซเชียลมินิมอลจัดบรรทัดเดียว */}
-                  <div className="flex gap-3 mb-5 items-end">
+                  <div className="flex gap-3 mb-6 items-end">
                     {/* Notes Section */}
                     <div className="flex-[1.6] flex flex-col justify-end">
                       <h3 className="text-[9px] font-black uppercase tracking-[0.2em] opacity-70 ml-1 mb-1.5" style={{ color: COLORS.pinkDeep }}>Notes</h3>
@@ -767,8 +865,32 @@
                     </div>
                   </div>
 
+                  {/* Promo Slots Section (รูป 3 ช่อง) */}
+                  {(isAdmin || promoSlots.some(s => s.img || s.text || s.link)) && (
+                    <div className="mb-7 mt-6">
+                      <div className="flex items-center justify-between mb-3 ml-1">
+                        <h2 className="text-[10px] font-black italic uppercase tracking-[0.3em] opacity-50" style={{ color: COLORS.textSoft }}>HIGHLIGHTS</h2>
+                        <div className="h-[1px] flex-1 mx-3" style={{ background: `linear-gradient(to right, ${COLORS.pink}40, transparent)` }}></div>
+                      </div>
+                      
+                      <div className="flex gap-3 mb-3">
+                        <div className="flex-1">
+                          <PromoSlot data={promoSlots[0]} index={0} isAdmin={isAdmin} onEdit={() => openPromoModal(0)} onClickLink={handlePromoLinkClick} />
+                        </div>
+                        <div className="flex-1">
+                          <PromoSlot data={promoSlots[1]} index={1} isAdmin={isAdmin} onEdit={() => openPromoModal(1)} onClickLink={handlePromoLinkClick} />
+                        </div>
+                      </div>
+                      <div className="flex justify-center">
+                        <div className="w-[calc(50%-0.375rem)]">
+                          <PromoSlot data={promoSlots[2]} index={2} isAdmin={isAdmin} onEdit={() => openPromoModal(2)} onClickLink={handlePromoLinkClick} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* ลิสต์คิวงาน */}
-                  <div className="flex items-center justify-between mb-2.5 ml-1 mt-6">
+                  <div className="flex items-center justify-between mb-2.5 ml-1 mt-8">
                     <h2 className="text-[10px] font-black italic uppercase tracking-[0.3em] opacity-50" style={{ color: COLORS.textSoft }}>TODAY'S SET</h2>
                     <div className="h-[1px] flex-1 mx-3" style={{ background: `linear-gradient(to right, ${COLORS.pink}40, transparent)` }}></div>
                   </div>
@@ -838,11 +960,35 @@
               </div>
             </div>
 
+            {/* Modal: Promo Slot Config */}
+            {showPromoModal && (
+              <div className="fixed inset-0 z-[120] flex items-center justify-center p-6 backdrop-blur-[2px] animate-fadeIn" style={{ backgroundColor: '#241a2240' }}>
+                <form onSubmit={handleSavePromo} className="backdrop-blur-xl w-full max-w-xs rounded-[35px] p-6 shadow-2xl animate-slideUp" style={{ backgroundColor: `${COLORS.modalBg}f5`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
+                  <h3 className="text-sm font-black mb-4 text-center" style={{ color: COLORS.textMain }}>ตั้งค่ารูปไฮไลท์ช่องที่ {editingPromoIndex + 1} ✨</h3>
+                  <div className="space-y-2">
+                    <input type="url" value={tempPromoData.img} onChange={(e) => setTempPromoData({...tempPromoData, img: e.target.value})} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ลิงก์รูปภาพ (Google Drive)" />
+                    <input type="text" value={tempPromoData.text} onChange={(e) => setTempPromoData({...tempPromoData, text: e.target.value})} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ข้อความบนปุ่ม (เช่น กดดูผลงาน)" />
+                    <input type="url" value={tempPromoData.link} onChange={(e) => setTempPromoData({...tempPromoData, link: e.target.value})} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ลิงก์เมื่อกดปุ่ม (URL)" />
+                    
+                    <div className="flex items-center gap-2 mt-3">
+                      <button type="submit" className="flex-1 py-3.5 rounded-2xl font-black text-xs shadow-lg active:scale-95 transition-all" style={{ backgroundColor: '#e5a9bf', color: '#241a22' }}>บันทึก</button>
+                      <button type="button" onClick={handleClearPromo} className="w-12 h-[44px] flex items-center justify-center rounded-2xl active:scale-95 transition-all shadow-sm" style={{ backgroundColor: '#e5a9bf20', color: '#e5a9bf', borderWidth: '1px', borderColor: '#e5a9bf40' }} title="ลบข้อมูลช่องนี้">
+                        <IconTrash size={18} />
+                      </button>
+                    </div>
+                    <button type="button" onClick={() => setShowPromoModal(false)} className="w-full text-[9px] font-bold mt-2 uppercase tracking-widest opacity-40" style={{ color: COLORS.textSoft }}>Close</button>
+                  </div>
+                </form>
+              </div>
+            )}
+
             {/* Modal: Add/Edit Task */}
             {showModal && (
               <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 backdrop-blur-[2px] animate-fadeIn" style={{ backgroundColor: '#241a2240' }}>
                 <form onSubmit={handleSaveTask} className="backdrop-blur-xl w-full max-w-xs rounded-[35px] p-6 shadow-2xl animate-slideUp" style={{ backgroundColor: `${COLORS.modalBg}f5`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
-                  <h3 className="text-sm font-black mb-4 text-center" style={{ color: COLORS.textMain }}>{editingTask ? 'แก้ไขคิวงาน ✨' : 'เพิ่มคิวใหม่ ✨'}</h3>
+                  <h3 className="text-sm font-black mb-4 text-center" style={{ color: COLORS.textMain }}>
+                    {!isAdmin ? 'รายละเอียดคิวงาน ✨' : editingTask ? 'แก้ไขคิวงาน ✨' : 'เพิ่มคิวใหม่ ✨'}
+                  </h3>
                   <div className="space-y-2 relative">
                     {isSaving && (
                       <div className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-2xl backdrop-blur-sm" style={{ backgroundColor: `${COLORS.modalBg}cc` }}>
@@ -855,57 +1001,64 @@
                       <label className="flex items-center cursor-pointer gap-2 px-3 py-1.5 rounded-full shadow-sm" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30' }}>
                         <span className="text-[10px] font-bold" style={{ color: COLORS.textSoft }}>คิวด่วน 🔥</span>
                         <div className="relative">
-                          <input type="checkbox" name="priority" value="urgent" defaultChecked={editingTask?.priority === 'urgent'} className="sr-only peer" />
+                          <input type="checkbox" name="priority" disabled={!isAdmin} value="urgent" defaultChecked={editingTask?.priority === 'urgent'} className="sr-only peer" />
                           <div className="w-8 h-4 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-[#e5a9bf]"></div>
                         </div>
                       </label>
                     </div>
 
-                    <input name="client" required defaultValue={editingTask?.client || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ชื่อลูกค้า" />
+                    <input name="client" disabled={!isAdmin} required defaultValue={editingTask?.client || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ชื่อลูกค้า" />
 
                     <div className="flex flex-col gap-2">
-                      <input list="taskTypesList" name="type" required defaultValue={editingTask?.type || ''} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ประเภทงาน" />
+                      <input list="taskTypesList" name="type" disabled={!isAdmin} required defaultValue={editingTask?.type || ''} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ประเภทงาน" />
                       <datalist id="taskTypesList">
                         {taskTypes.map(type => <option key={type} value={type} />)}
                       </datalist>
 
-                      <input list="channelsList" name="channel" required defaultValue={editingTask?.channel || ''} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ช่องทาง" />
+                      <input list="channelsList" name="channel" disabled={!isAdmin} required defaultValue={editingTask?.channel || ''} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ช่องทาง" />
                       <datalist id="channelsList">
                         {channels.map(ch => <option key={ch} value={ch} />)}
                       </datalist>
                     </div>
 
-                    <div className="flex flex-col gap-2 relative">
-                      <select name="status" defaultValue={editingTask?.status || 'waiting'} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm appearance-none cursor-pointer" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }}>
-                        <option value="waiting">รอคิว</option>
-                        <option value="designing">กำลังออกแบบ</option>
-                        <option value="design_sent">ส่งแบบแล้ว</option>
-                        <option value="doing_nails">กำลังทำเล็บ</option>
-                        <option value="nails_done">เล็บเสร็จแล้ว</option>
-                        <option value="delivered">ส่งแล้ว</option>
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4" style={{ color: COLORS.textSoft }}>
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="relative">
+                        <select name="status" disabled={!isAdmin} defaultValue={editingTask?.status || 'waiting'} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm appearance-none cursor-pointer disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }}>
+                          <option value="waiting">รอคิว</option>
+                          <option value="designing">กำลังออกแบบ</option>
+                          <option value="design_sent">ส่งแบบแล้ว</option>
+                          <option value="doing_nails">กำลังทำเล็บ</option>
+                          <option value="nails_done">เล็บเสร็จแล้ว</option>
+                          <option value="delivered">ส่งแล้ว</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3" style={{ color: COLORS.textSoft }}>
+                          <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <input name="price" type="number" disabled={!isAdmin} defaultValue={editingTask?.price || ''} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ราคา (฿)" />
                       </div>
                     </div>
 
-                    <textarea name="details" rows="2" defaultValue={editingTask?.details || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all resize-none" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)..."></textarea>
+                    <textarea name="details" disabled={!isAdmin} rows="2" defaultValue={editingTask?.details || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all resize-none disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)..."></textarea>
 
                     <div className="flex items-center justify-between p-1.5 pl-4 rounded-2xl mt-1" style={{ backgroundColor: '#e5a9bf15', borderWidth: '1px', borderColor: '#e5a9bf40' }}>
                       <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-black" style={{ color: COLORS.pinkDeep }}>
                         <IconCalendar size={12} /><span>Deadline</span>
                       </div>
-                      <input name="deadline" type="date" required defaultValue={editingTask?.deadline || nextQueueDate} className="w-32 p-2.5 rounded-xl outline-none text-[10px] font-black transition-all cursor-pointer" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf40', color: COLORS.textMain }} />
+                      <input name="deadline" type="date" disabled={!isAdmin} required defaultValue={editingTask?.deadline || nextQueueDate} className="w-32 p-2.5 rounded-xl outline-none text-[10px] font-black transition-all cursor-pointer disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf40', color: COLORS.textMain }} />
                     </div>
 
-                    <div className="flex items-center gap-2 mt-3">
-                      <button type="submit" className="flex-1 py-3.5 rounded-2xl font-black text-xs shadow-lg active:scale-95 transition-all disabled:opacity-50" style={{ backgroundColor: '#e5a9bf', color: '#241a22' }}>บันทึกคิวงาน</button>
-                      {editingTask && (
-                        <button type="button" onClick={() => setTaskToDelete(editingTask.id)} className="w-12 h-[44px] flex items-center justify-center rounded-2xl active:scale-95 transition-all shadow-sm" style={{ backgroundColor: '#e5a9bf20', color: '#e5a9bf', borderWidth: '1px', borderColor: '#e5a9bf40' }}>
-                          <IconTrash size={18} />
-                        </button>
-                      )}
-                    </div>
+                    {isAdmin && (
+                      <div className="flex items-center gap-2 mt-3">
+                        <button type="submit" className="flex-1 py-3.5 rounded-2xl font-black text-xs shadow-lg active:scale-95 transition-all disabled:opacity-50" style={{ backgroundColor: '#e5a9bf', color: '#241a22' }}>บันทึกคิวงาน</button>
+                        {editingTask && (
+                          <button type="button" onClick={() => setTaskToDelete(editingTask.id)} className="w-12 h-[44px] flex items-center justify-center rounded-2xl active:scale-95 transition-all shadow-sm" style={{ backgroundColor: '#e5a9bf20', color: '#e5a9bf', borderWidth: '1px', borderColor: '#e5a9bf40' }}>
+                            <IconTrash size={18} />
+                          </button>
+                        )}
+                      </div>
+                    )}
                     <button type="button" onClick={() => { setShowModal(false); setEditingTask(null); }} className="w-full text-[9px] font-bold mt-2 uppercase tracking-widest opacity-40" style={{ color: COLORS.textSoft }}>Close</button>
                   </div>
                 </form>
@@ -937,7 +1090,7 @@
                   if (tempImageUrl) {
                     let finalUrl = tempImageUrl;
                     const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                    if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${match[1]}`;
+                    if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${m[1]}`;
                     setProfileImage(finalUrl);
                     fetchAPI({ action: 'saveProfileImage', imageUrl: finalUrl });
                   }
@@ -962,7 +1115,7 @@
                   if (tempBannerUrl) {
                     let finalUrl = tempBannerUrl;
                     const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/) || finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                    if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${match[1]}`;
+                    if (match && match[1]) finalUrl = `https://lh3.googleusercontent.com/d/${m[1]}`;
                     setBannerImage(finalUrl);
                     toggleBannerVisibility(true);
                     fetchAPI({ action: 'saveBannerImage', imageUrl: finalUrl });
@@ -1112,4 +1265,3 @@
   </script>
 </body>
 </html>
-
