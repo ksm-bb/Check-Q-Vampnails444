@@ -142,7 +142,7 @@
               <p className="text-[8px] font-black tracking-[0.5em] uppercase" style={{ color: COLORS.purpleDeep }}>Check Queue</p>
             </div>
           </div>
-          <div onClick={isAdmin ? handleImageUpload : undefined} className={`w-16 h-16 rounded-[1.25rem] flex items-center justify-center relative overflow-hidden transition-transform ${isAdmin ? 'cursor-pointer hover:scale-105 active:scale-95' : ''}`} style={{ backgroundColor: COLORS.cardInner, borderWidth: '2px', borderColor: COLORS.profileBorder }}>
+          <div onClick={isAdmin ? handleImageUpload : undefined} className={`shrink-0 w-16 h-16 rounded-[1.25rem] flex items-center justify-center relative overflow-hidden transition-transform ${isAdmin ? 'cursor-pointer hover:scale-105 active:scale-95' : ''}`} style={{ backgroundColor: COLORS.cardInner, borderWidth: '2px', borderColor: COLORS.profileBorder }}>
             {profileImage ? (
               <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
             ) : (
@@ -362,7 +362,6 @@
     });
 
     const PromoSlot = React.memo(({ data, index, isAdmin, onEdit, onClickLink }) => {
-      // ดักจับข้อมูล
       const safeData = data || { img: '', text: '', link: '' };
       const hasContent = safeData.img || safeData.text || safeData.link;
 
@@ -533,7 +532,7 @@
       const [selectedNextDate, setSelectedNextDate] = useState('');
       const [isBouncing, setIsBouncing] = useState(false);
 
-      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwVMvK6l0X0oOwzngNPoGlO8Hp57uKn4CcZey-6u67mCoEsYnwCkxeUh9iXXIAVnOXhIw/exec";
+      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzFeBZkzSnCVtpvuacPmO1ZOmP5c1vDpO6z3btYZMNoLrrCN2HaDX817duMsITJUnJ6UQ/exec";
 
       const fetchAPI = async (payload) => {
         try {
@@ -616,7 +615,6 @@
         }
       };
 
-      // ฟังก์ชันปลอดภัยสำหรับแปลงลิงก์รูป (ป้องกันบั๊ก match is not defined)
       const handleSaveImageOrLink = (url) => {
         if (!url || typeof url !== 'string') return url;
         let finalUrl = url.trim();
@@ -730,6 +728,7 @@
           priority: formData.get('priority') ? 'urgent' : 'normal',
           deadline: formData.get('deadline'),
           details: formData.get('details'),
+          address: formData.get('address') || '',
           status: formData.get('status') || (editingTask ? editingTask.status : 'waiting'),
           price: formData.get('price') || ''
         };
@@ -998,8 +997,8 @@
 
             {/* Modal: Add/Edit Task */}
             {showModal && (
-              <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 backdrop-blur-[2px] animate-fadeIn" style={{ backgroundColor: '#241a2240' }}>
-                <form onSubmit={handleSaveTask} className="backdrop-blur-xl w-full max-w-xs rounded-[35px] p-6 shadow-2xl animate-slideUp" style={{ backgroundColor: `${COLORS.modalBg}f5`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
+              <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-[2px] animate-fadeIn" style={{ backgroundColor: '#241a2240' }}>
+                <form onSubmit={handleSaveTask} className="backdrop-blur-xl w-full max-w-xs rounded-[35px] p-6 shadow-2xl animate-slideUp max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden" style={{ backgroundColor: `${COLORS.modalBg}f5`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
                   <h3 className="text-sm font-black mb-4 text-center" style={{ color: COLORS.textMain }}>
                     {!isAdmin ? 'รายละเอียดคิวงาน ✨' : editingTask ? 'แก้ไขคิวงาน ✨' : 'เพิ่มคิวใหม่ ✨'}
                   </h3>
@@ -1055,6 +1054,8 @@
                     </div>
 
                     <textarea name="details" disabled={!isAdmin} rows="2" defaultValue={editingTask?.details || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all resize-none disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)..."></textarea>
+                    
+                    <textarea name="address" disabled={!isAdmin} rows="2" defaultValue={editingTask?.address || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all resize-none disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ที่อยู่จัดส่ง..."></textarea>
 
                     <div className="flex items-center justify-between p-1.5 pl-4 rounded-2xl mt-1" style={{ backgroundColor: '#e5a9bf15', borderWidth: '1px', borderColor: '#e5a9bf40' }}>
                       <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-black" style={{ color: COLORS.pinkDeep }}>
@@ -1275,4 +1276,3 @@
   </script>
 </body>
 </html>
-
