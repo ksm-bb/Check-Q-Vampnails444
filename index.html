@@ -160,8 +160,8 @@
       const liquidY = 95 - (progress / 100) * 80;
 
       return (
-        <div onClick={triggerFlowerBounce} className={`backdrop-blur-sm rounded-[28px] p-3 flex flex-col items-center justify-center shadow-lg h-full relative overflow-hidden transition-all duration-300 cursor-pointer ${isBouncing ? 'scale-95' : 'hover:scale-[1.02]'}`} style={{ backgroundColor: `${COLORS.cardWhite}cc`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
-          <div className="absolute top-2 left-3 text-[8px] font-black uppercase tracking-tighter opacity-70" style={{ color: COLORS.purpleDeep }}>งานที่เสร็จวันนี้</div>
+        <div onClick={triggerFlowerBounce} className={`backdrop-blur-sm rounded-[28px] p-3 flex flex-col items-center justify-center shadow-lg h-full relative overflow-hidden transition-all duration-300 cursor-pointer ${isBouncing ? 'scale-95' : 'hover:scale-[1.02]'}`} style={{ backgroundColor: '#372d36cc', borderWidth: '1px', borderColor: '#e5a9bf' }}>
+          <div className="absolute top-2 left-3 text-[8px] font-black uppercase tracking-tighter opacity-80" style={{ color: '#e5a9bf' }}>งานที่เสร็จวันนี้</div>
           
           <div className="relative w-full h-[72px] flex items-center justify-center mt-3">
             {progress > 0 && (
@@ -202,31 +202,39 @@
             </svg>
           </div>
           
-          <div className="mt-0 flex items-center gap-1 px-1.5 py-[2px] rounded-full z-10 shadow-sm" style={{ backgroundColor: `${COLORS.buttonBg}cc`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
-            <span className="text-[8px] font-black" style={{ color: COLORS.purpleDeep }}>{progress}%</span>
-            <div className="w-[2px] h-[2px] rounded-full" style={{ backgroundColor: COLORS.pink }}></div>
-            <span className="text-[6px] font-bold uppercase tracking-widest" style={{ color: COLORS.textSoft }}>{doneToday}/{todayTasksLength}</span>
+          <div className="mt-0 flex items-center gap-1 px-1.5 py-[2px] rounded-full z-10 shadow-sm" style={{ backgroundColor: '#241a22', borderWidth: '1px', borderColor: '#e5a9bf' }}>
+            <span className="text-[8px] font-black" style={{ color: '#fdd6dd' }}>{progress}%</span>
+            <div className="w-[2px] h-[2px] rounded-full" style={{ backgroundColor: '#e5a9bf' }}></div>
+            <span className="text-[6px] font-bold uppercase tracking-widest" style={{ color: '#e5a9bf' }}>{doneToday}/{todayTasksLength}</span>
           </div>
         </div>
       );
     });
 
     const CompactStats = React.memo(({ isAdmin, selectedNextDate, nextQueueDate, handleSetManualDate, waitingCount }) => (
-      <div className="backdrop-blur-sm rounded-[28px] p-1 shadow-lg h-full flex overflow-hidden relative group transition-all" style={{ backgroundColor: `${COLORS.cardWhite}cc`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
-        <div className={`flex-1 flex flex-col justify-center items-center p-2 relative rounded-l-[24px] transition-colors overflow-hidden ${isAdmin ? 'cursor-pointer' : ''}`} style={{ backgroundColor: `${COLORS.orange}66` }}>
+      <div className="backdrop-blur-sm rounded-[28px] p-1 shadow-lg h-full flex overflow-hidden relative group transition-all" style={{ backgroundColor: '#372d36cc', borderWidth: '1px', borderColor: '#e5a9bf' }}>
+        
+        {/* Left Side: NEXT QUEUE DATE */}
+        <div className={`flex-[1.1] flex flex-col justify-center items-center p-2 relative rounded-l-[24px] transition-colors overflow-hidden ${isAdmin ? 'cursor-pointer hover:bg-[#241a22]' : ''}`} style={{ backgroundColor: '#e5a9bf' }}>
           {isAdmin && (
             <input type="date" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10" value={selectedNextDate || nextQueueDate} onChange={(e) => handleSetManualDate(e.target.value)} />
           )}
-          <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md text-[7px] font-black shadow-sm uppercase tracking-wider whitespace-nowrap" style={{ color: COLORS.orangeDeep, backgroundColor: COLORS.buttonBg, borderWidth: '1px', borderColor: '#e5a9bf60' }}>DATE</div>
-          <div className="flex flex-col items-center mt-1 relative z-0 pointer-events-none">
-            <span className="text-3xl font-black leading-none tracking-tighter" style={{ color: COLORS.textMain }}>{new Date(nextQueueDate).getDate()}</span>
-            <span className="text-[8px] font-black opacity-80 uppercase mt-0.5" style={{ color: COLORS.orangeDeep }}>{new Date(nextQueueDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+          <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-md text-[7px] font-black shadow-sm uppercase tracking-wider whitespace-nowrap z-10" style={{ color: '#fdd6dd', backgroundColor: '#372d36cc' }}>
+            NEXT QUEUE
+          </div>
+          <div className="flex flex-col items-center mt-3 relative z-0 pointer-events-none">
+            <span className="text-3xl font-black leading-none tracking-tighter" style={{ color: '#372d36cc' }}>
+              {new Date(nextQueueDate).getDate()}
+            </span>
+            <span className="text-[10px] font-black uppercase mt-1 opacity-80" style={{ color: '#241a22' }}>
+              {new Date(nextQueueDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+            </span>
           </div>
           {isAdmin && selectedNextDate && (
             <button
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleSetManualDate(''); }}
               className="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-20 px-2.5 py-0.5 rounded-md text-[7px] font-black shadow-sm active:scale-90 transition-all"
-              style={{ color: COLORS.pinkDeep, backgroundColor: COLORS.buttonBg, borderWidth: '1px', borderColor: '#e5a9bf60' }}
+              style={{ color: '#fdd6dd', backgroundColor: '#e5a9bf', borderWidth: '1px', borderColor: '#e5a9bf' }}
               title="กลับไปคำนวณวันว่างอัตโนมัติ"
             >
               AUTO
@@ -234,23 +242,32 @@
           )}
         </div>
 
-        <div className="my-4 rounded-full" style={{ width: '1px', backgroundColor: `${COLORS.dividerColor}60` }}></div>
+        <div className="my-4 rounded-full" style={{ width: '1px', backgroundColor: '#e5a9bf40' }}></div>
 
+        {/* Right Side: จำนวนคิวที่เหลือ */}
         <div className="flex-1 flex flex-col justify-center items-center p-2 relative">
-          <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-md text-[7px] font-black shadow-sm uppercase tracking-wider whitespace-nowrap z-10" style={{ color: COLORS.blueDeep, backgroundColor: COLORS.buttonBg, borderWidth: '1px', borderColor: '#e5a9bf60' }}>จำนวนคิวตอนนี้</div>
-          <div className="relative mt-5 flex flex-col items-center">
+          <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-md text-[7px] font-black shadow-sm uppercase tracking-wider whitespace-nowrap z-10" style={{ color: '#372d36', backgroundColor: '#e5a9bf' }}>
+            จำนวนคิวที่เหลือ
+          </div>
+          <div className="relative mt-4 flex flex-col items-center">
             <div className="relative">
-              <div className="absolute inset-0 blur-lg rounded-full opacity-30 scale-125" style={{ backgroundColor: COLORS.pink }}></div>
-              <div className="w-11 h-11 rounded-full flex flex-col items-center justify-center shadow-inner relative z-10" style={{ backgroundColor: COLORS.cardInner, borderWidth: '2px', borderColor: '#e5a9bf60' }}>
-                <span className="text-xl font-black leading-none" style={{ color: COLORS.blueDeep }}>{waitingCount}</span>
+              <div className="absolute inset-0 blur-md rounded-full opacity-30 scale-125" style={{ backgroundColor: '#e5a9bf' }}></div>
+              <div className="w-10 h-10 rounded-full flex flex-col items-center justify-center shadow-inner relative z-10" style={{ backgroundColor: '#372d36', borderWidth: '2px', borderColor: '#e5a9bf' }}>
+                <span className="text-xl font-black leading-none" style={{ color: '#fdd6dd' }}>
+                  {waitingCount}
+                </span>
               </div>
             </div>
-            <span className="text-[8px] font-black opacity-60 uppercase mt-1.5 relative z-10" style={{ color: COLORS.blueDeep }}>คิว</span>
+            <span className="text-[8px] font-black uppercase mt-1.5 relative z-10 opacity-80" style={{ color: '#e5a9bf' }}>
+              คิว
+            </span>
           </div>
         </div>
+
       </div>
     ));
 
+    // ปรับเลย์เอาต์การ์ดคิวงาน
     const TaskCard = React.memo(({ task, isAdmin, onEdit, onStatusChange }) => {
       let currentStatusKey = task.status;
       if (currentStatusKey === 'todo') currentStatusKey = 'waiting';
@@ -280,11 +297,17 @@
           <div className="absolute left-2 top-3 bottom-3 w-1 rounded-full shadow-sm z-10" style={{ backgroundColor: task.channel === 'LINE' ? '#a8d5a2' : task.channel === 'FB' || task.channel === 'FACEBOOK' ? '#a0b9cc' : task.channel === 'IG' ? '#e5a9bf' : '#fdd6dd' }}></div>
           
           <div className="pl-3 pr-1 relative z-10">
+            {/* บรรทัดที่ 1: ชื่อลูกค้า | ราคา (ป้ายเด่นๆ) | ช่องทาง | ด่วน | วันที่สั่ง */}
             <div className="flex justify-between items-start mb-1 gap-2">
-              <div className="flex items-center gap-2 flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 flex-1 min-w-0 flex-wrap">
                 <span className="font-bold text-base truncate block" style={{ color: COLORS.textMain }}>
-                  {task.client}{task.price ? ` ฿${task.price}` : ''}
+                  {task.client}
                 </span>
+                {task.price && (
+                  <span className="shrink-0 text-[10px] font-black px-2 py-0.5 rounded-md shadow-sm" style={{ color: '#241a22', backgroundColor: '#e5a9bf' }}>
+                    ฿{task.price}
+                  </span>
+                )}
                 <span className={`shrink-0 text-[7px] px-1.5 py-0.5 rounded-md font-black uppercase border ${
                   task.channel === 'LINE' ? 'border-[#a8d5a2]/30' :
                   task.channel === 'FB' || task.channel === 'FACEBOOK' ? 'border-[#a0b9cc]/30' :
@@ -299,14 +322,23 @@
               </div>
             </div>
 
-            <div className="flex justify-between items-end mt-1">
-              <div className="flex-1 min-w-0 mr-4 flex flex-col">
-                <span className={`text-[10px] font-bold truncate ${isDelivered ? 'line-through' : ''}`} style={{ color: isDelivered ? '#e5a9bf40' : '#e5a9bf80' }}>{task.type}</span>
-                {task.details && (
-                  <span className={`text-[11px] font-medium truncate mt-0.5`} style={{ color: isDelivered ? '#fdd6dd30' : '#fdd6dd90' }}>{task.details}</span>
-                )}
-              </div>
+            {/* บรรทัดที่ 2: ประเภทงาน */}
+            <div className="mb-0.2">
+              <span className={`text-[12px] font-bold truncate ${isDelivered ? 'line-through' : ''}`} style={{ color: isDelivered ? '#e5a9bf40' : '#e5a9bf80' }}>
+                {task.type}
+              </span>
+            </div>
 
+            {/* บรรทัดที่ 3: ทรงเล็บ | สถานะ */}
+            <div className="flex justify-between items-center mb-0.2">
+              <div className="flex-1 min-w-0 mr-4">
+                {task.nailShape ? (
+                  <span className={`text-[11px] font-medium truncate ${isDelivered ? 'opacity-50' : ''}`} style={{ color: '#fdd6dd' }}>
+                    ทรง: {task.nailShape}
+                  </span>
+                ) : <span></span>}
+              </div>
+              
               {isAdmin ? (
                 <div onClick={(e) => e.stopPropagation()} className="relative shrink-0">
                   <select
@@ -334,7 +366,17 @@
               )}
             </div>
 
-            <div className="mt-3 w-full h-[12px] rounded-full overflow-hidden relative" 
+            {/* บรรทัดที่ 4: เบอร์เล็บ (ไม่แสดงรายละเอียดเพิ่มเติมในนี้) */}
+            {task.nailSize && (
+              <div className="mb-0.5">
+                <span className={`text-[11px] font-medium truncate ${isDelivered ? 'opacity-50' : ''}`} style={{ color: '#fdd6dd' }}>
+                  เบอร์: {task.nailSize}
+                </span>
+              </div>
+            )}
+
+            {/* บรรทัดที่ 5: แถบเปอร์เซ็นต์ */}
+            <div className="mt-1.5 w-full h-[12px] rounded-full overflow-hidden relative" 
                  style={{ 
                    backgroundColor: '#241a22', 
                    border: '2px solid #d18a9e',
@@ -511,6 +553,9 @@
       const [showBannerModal, setShowBannerModal] = useState(false);
 
       const [notes, setNotes] = useState('');
+      const [announcementLabel, setAnnouncementLabel] = useState('NOTICE');
+      const [announcementText, setAnnouncementText] = useState('ยินดีต้อนรับสู่ Vampnails444 จองคิวล่วงหน้าได้เลยค่ะ!');
+
       const [socialLinks, setSocialLinks] = useState({ fb: '', ig: '', tiktok: '' });
       const [showLinkModal, setShowLinkModal] = useState(false); 
       const [tempLinks, setTempLinks] = useState({ fb: '', ig: '', tiktok: '' });
@@ -532,7 +577,7 @@
       const [selectedNextDate, setSelectedNextDate] = useState('');
       const [isBouncing, setIsBouncing] = useState(false);
 
-      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzFeBZkzSnCVtpvuacPmO1ZOmP5c1vDpO6z3btYZMNoLrrCN2HaDX817duMsITJUnJ6UQ/exec";
+      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwRwz2dTlBbPsdSP_ygnT3lmLktRPQx07Vqzpym-aeTvJT-CmtGDqh2gSQm-OD1GA0HSw/exec";
 
       const fetchAPI = async (payload) => {
         try {
@@ -567,6 +612,10 @@
               }
               
               if (response.data.notes) setNotes(response.data.notes);
+              // โหลดค่า announcement ถ้ามีในระบบ (สามารถรองรับการโหลดจาก Apps Script ได้)
+              if (response.data.announcementLabel) setAnnouncementLabel(response.data.announcementLabel);
+              if (response.data.announcementText) setAnnouncementText(response.data.announcementText);
+
               if (response.data.socialLinks) {
                 setSocialLinks({
                   fb: response.data.socialLinks.fb || '',
@@ -605,6 +654,11 @@
       const handleNoteBlur = () => {
         if (!isAdmin) return;
         fetchAPI({ action: 'saveNotes', notes: notes });
+      };
+
+      const handleAnnouncementBlur = () => {
+        if (!isAdmin) return;
+        fetchAPI({ action: 'saveAnnouncement', label: announcementLabel, text: announcementText });
       };
 
       const handleSocialClick = (type) => {
@@ -730,7 +784,9 @@
           details: formData.get('details'),
           address: formData.get('address') || '',
           status: formData.get('status') || (editingTask ? editingTask.status : 'waiting'),
-          price: formData.get('price') || ''
+          price: formData.get('price') || '',
+          nailShape: formData.get('nailShape') || '',
+          nailSize: formData.get('nailSize') || ''
         };
         fetchAPI({ action: 'saveOrUpdateTask', task: taskData })
           .then(res => {
@@ -796,6 +852,47 @@
           <DynamicBackground />
           <div className="max-w-md mx-auto min-h-screen relative pb-28">
             <Header isAdmin={isAdmin} setIsAdmin={setIsAdmin} setShowAuthModal={setShowAuthModal} handleImageUpload={handleImageUpload} profileImage={profileImage} />
+
+            {/* Announcement Banner */}
+            <div className="px-5 mb-4 relative z-10">
+              <div className="h-[40px] rounded-[20px] shadow-sm flex items-center p-[4px] overflow-hidden transition-all" style={{ backgroundColor: `${COLORS.cardWhite}cc`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
+                {isAdmin ? (
+                  <div className="flex w-full h-full items-center">
+                    <input
+                      value={announcementLabel}
+                      onChange={e => setAnnouncementLabel(e.target.value)}
+                      onBlur={handleAnnouncementBlur}
+                      className="h-full px-3 text-[10px] font-black uppercase text-center outline-none shrink-0 rounded-[15px] shadow-sm transition-all"
+                      style={{ 
+                        backgroundColor: COLORS.pinkDeep, 
+                        color: COLORS.purple,
+                        width: `${Math.max(6, announcementLabel.length + 3)}ch` 
+                      }}
+                      placeholder="NOTICE"
+                    />
+                    <input
+                      value={announcementText}
+                      onChange={e => setAnnouncementText(e.target.value)}
+                      onBlur={handleAnnouncementBlur}
+                      className="h-full w-full px-3 text-[11px] font-bold outline-none bg-transparent"
+                      style={{ color: COLORS.textMain }}
+                      placeholder="พิมพ์ข้อความประกาศ..."
+                    />
+                  </div>
+                ) : (
+                  <div className="flex w-full h-full items-center">
+                    <div className="h-full px-3 flex items-center justify-center text-[10px] font-black uppercase shrink-0 z-10 relative rounded-[15px] shadow-sm whitespace-nowrap transition-all" style={{ backgroundColor: COLORS.pinkDeep, color: COLORS.purple }}>
+                      {announcementLabel}
+                    </div>
+                    <div className="marquee-container flex-1 h-full flex items-center ml-2">
+                      <div className="marquee-content text-[11px] font-bold" style={{ color: COLORS.textMain }}>
+                        {announcementText || '...'}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
 
             {/* Banner */}
             <div className="px-5 relative z-10 mb-4">
@@ -998,7 +1095,7 @@
             {/* Modal: Add/Edit Task */}
             {showModal && (
               <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-[2px] animate-fadeIn" style={{ backgroundColor: '#241a2240' }}>
-                <form onSubmit={handleSaveTask} className="backdrop-blur-xl w-full max-w-xs rounded-[35px] p-6 shadow-2xl animate-slideUp max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden" style={{ backgroundColor: `${COLORS.modalBg}f5`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
+                <form onSubmit={handleSaveTask} className="backdrop-blur-xl w-full max-w-xs rounded-[35px] p-6 shadow-2xl animate-slideUp max-h-[85vh] overflow-y-auto overscroll-contain pb-8 [&::-webkit-scrollbar]:hidden" style={{ backgroundColor: `${COLORS.modalBg}f5`, borderWidth: '1px', borderColor: COLORS.cardBorder }}>
                   <h3 className="text-sm font-black mb-4 text-center" style={{ color: COLORS.textMain }}>
                     {!isAdmin ? 'รายละเอียดคิวงาน ✨' : editingTask ? 'แก้ไขคิวงาน ✨' : 'เพิ่มคิวใหม่ ✨'}
                   </h3>
@@ -1012,7 +1109,7 @@
 
                     <div className="flex justify-end mb-1">
                       <label className="flex items-center cursor-pointer gap-2 px-3 py-1.5 rounded-full shadow-sm" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30' }}>
-                        <span className="text-[10px] font-bold" style={{ color: COLORS.textSoft }}>คิวด่วน 🔥</span>
+                        <span className="text-[10px] font-bold" style={{ color: COLORS.textSoft }}>คิวเร่ง 🔥</span>
                         <div className="relative">
                           <input type="checkbox" name="priority" disabled={!isAdmin} value="urgent" defaultChecked={editingTask?.priority === 'urgent'} className="sr-only peer" />
                           <div className="w-8 h-4 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-[#e5a9bf]"></div>
@@ -1022,16 +1119,20 @@
 
                     <input name="client" disabled={!isAdmin} required defaultValue={editingTask?.client || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ชื่อลูกค้า" />
 
-                    <div className="flex flex-col gap-2">
-                      <input list="taskTypesList" name="type" disabled={!isAdmin} required defaultValue={editingTask?.type || ''} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ประเภทงาน" />
-                      <datalist id="taskTypesList">
-                        {taskTypes.map(type => <option key={type} value={type} />)}
-                      </datalist>
-
-                      <input list="channelsList" name="channel" disabled={!isAdmin} required defaultValue={editingTask?.channel || ''} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ช่องทาง" />
-                      <datalist id="channelsList">
-                        {channels.map(ch => <option key={ch} value={ch} />)}
-                      </datalist>
+                    {/* ช่องทาง & ประเภทงาน จัด 2 คอลัมน์ */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <input list="taskTypesList" name="type" disabled={!isAdmin} required defaultValue={editingTask?.type || ''} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ประเภทงาน" />
+                        <datalist id="taskTypesList">
+                          {taskTypes.map(type => <option key={type} value={type} />)}
+                        </datalist>
+                      </div>
+                      <div>
+                        <input list="channelsList" name="channel" disabled={!isAdmin} required defaultValue={editingTask?.channel || ''} className="w-full p-3.5 rounded-2xl font-black text-[10px] outline-none shadow-sm disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ช่องทาง" />
+                        <datalist id="channelsList">
+                          {channels.map(ch => <option key={ch} value={ch} />)}
+                        </datalist>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
@@ -1053,8 +1154,41 @@
                       </div>
                     </div>
 
+                    {/* ช่องทรงเล็บ (เปลี่ยนเป็น Dropdown) */}
+                    <div className="relative">
+                      <select name="nailShape" disabled={!isAdmin} defaultValue={editingTask?.nailShape || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all appearance-none cursor-pointer disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }}>
+                        <option value="" disabled>เลือกทรงเล็บ...</option>
+                        <option value="Short Almond">Short Almond</option>
+                        <option value="Long Almond">Long Almond</option>
+                        <option value="Long Almond แหลม">Long Almond แหลม</option>
+                        <option value="Extra Short Oval">Extra Short Oval</option>
+                        <option value="Extra Short Square">Extra Short Square</option>
+                        <option value="Extra Short Squoval (สั้นกุด)">Extra Short Squoval (สั้นกุด)</option>
+                        <option value="Medium Stiletto">Medium Stiletto</option>
+                        <option value="Long Stiletto">Long Stiletto</option>
+                        <option value="Short Coffin">Short Coffin</option>
+                        <option value="Medium Coffin">Medium Coffin</option>
+                        <option value="Long Coffin">Long Coffin</option>
+                        <option value="Extra Long Coffin">Extra Long Coffin</option>
+                        <option value="Short Round">Short Round</option>
+                        <option value="Medium Round">Medium Round</option>
+                        <option value="Long Round">Long Round</option>
+                        <option value="Square">Square</option>
+                        <option value="Long Square">Long Square</option>
+                        <option value="Duck Nail">Duck Nail</option>
+                        <option value="Short Claw Nail">Short Claw Nail</option>
+                        <option value="Long Claw Nail">Long Claw Nail</option>
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3" style={{ color: COLORS.textSoft }}>
+                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
+                    </div>
+
                     <textarea name="details" disabled={!isAdmin} rows="2" defaultValue={editingTask?.details || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all resize-none disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)..."></textarea>
                     
+                    {/* ช่องเบอร์เล็บ */}
+                    <input name="nailSize" disabled={!isAdmin} defaultValue={editingTask?.nailSize || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="เบอร์เล็บ (เช่น 1,5,4,6,8)" />
+
                     <textarea name="address" disabled={!isAdmin} rows="2" defaultValue={editingTask?.address || ''} className="w-full p-3.5 rounded-2xl outline-none text-[11px] shadow-sm transition-all resize-none disabled:opacity-70" style={{ backgroundColor: COLORS.cardInner, borderWidth: '1px', borderColor: '#e5a9bf30', color: COLORS.textMain }} placeholder="ที่อยู่จัดส่ง..."></textarea>
 
                     <div className="flex items-center justify-between p-1.5 pl-4 rounded-2xl mt-1" style={{ backgroundColor: '#e5a9bf15', borderWidth: '1px', borderColor: '#e5a9bf40' }}>
@@ -1065,7 +1199,7 @@
                     </div>
 
                     {isAdmin && (
-                      <div className="flex items-center gap-2 mt-3">
+                      <div className="flex items-center gap-2 mt-3 pb-2">
                         <button type="submit" className="flex-1 py-3.5 rounded-2xl font-black text-xs shadow-lg active:scale-95 transition-all disabled:opacity-50" style={{ backgroundColor: '#e5a9bf', color: '#241a22' }}>บันทึกคิวงาน</button>
                         {editingTask && (
                           <button type="button" onClick={() => setTaskToDelete(editingTask.id)} className="w-12 h-[44px] flex items-center justify-center rounded-2xl active:scale-95 transition-all shadow-sm" style={{ backgroundColor: '#e5a9bf20', color: '#e5a9bf', borderWidth: '1px', borderColor: '#e5a9bf40' }}>
@@ -1226,6 +1360,22 @@
               20% { opacity: 0.8; }
               80% { opacity: 0.8; }
               100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+            }
+            /* แอนิเมชันสำหรับ Banner วิ่ง */
+            @keyframes marquee {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-100%); }
+            }
+            .marquee-container {
+              width: 100%;
+              overflow: hidden;
+              box-sizing: border-box;
+            }
+            .marquee-content {
+              display: inline-block;
+              white-space: nowrap;
+              padding-left: 100%;
+              animation: marquee 12s linear infinite;
             }
 
             .animate-orb-1 { animation: orb-1 18s ease-in-out infinite; }
